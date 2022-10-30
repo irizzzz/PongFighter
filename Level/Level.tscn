@@ -1,0 +1,197 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Ball/Ball.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Goal/Goal.cs" type="Script" id=3]
+[ext_resource path="res://Level/Level.cs" type="Script" id=4]
+[ext_resource path="res://Timer/Timer.cs" type="Script" id=5]
+[ext_resource path="res://assets/Lato-Regular.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://playerMeter/playerMeter.cs" type="Script" id=7]
+[ext_resource path="res://assets/player meter/BarV1_ProgressBarBorder.png" type="Texture" id=9]
+[ext_resource path="res://assets/player meter/BarV1_Bar.png" type="Texture" id=10]
+[ext_resource path="res://assets/BarV6_ProgressBar.png" type="Texture" id=11]
+[ext_resource path="res://playerMeter/cooldownMeter.cs" type="Script" id=12]
+[ext_resource path="res://assets/player meter/BarV1_ProgressBar.png" type="Texture" id=13]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 640, 25 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 26, 360 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 40
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 40
+font_data = ExtResource( 6 )
+
+[node name="Level" type="Node" groups=["Balls"]]
+script = ExtResource( 4 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.215686, 0.215686, 0.215686, 1 )
+
+[node name="topWall" type="StaticBody2D" parent="."]
+position = Vector2( 640, 25 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="topWall"]
+shape = SubResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="topWall"]
+margin_left = -640.0
+margin_top = -25.0
+margin_right = 640.0
+margin_bottom = 25.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="bottomWall" type="StaticBody2D" parent="."]
+position = Vector2( 640, 695 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bottomWall"]
+shape = SubResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="bottomWall"]
+anchor_right = 0.617
+margin_left = -640.0
+margin_top = -25.0
+margin_right = 640.0
+margin_bottom = 25.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="P2CooldownTimer" type="Timer" parent="."]
+one_shot = true
+script = ExtResource( 5 )
+
+[node name="P1CooldownTimer" type="Timer" parent="."]
+one_shot = true
+script = ExtResource( 5 )
+
+[node name="Ball" parent="." instance=ExtResource( 2 )]
+position = Vector2( 640, 360 )
+
+[node name="P1Goal" type="Area2D" parent="."]
+position = Vector2( -26, 360 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="P1Goal"]
+shape = SubResource( 2 )
+
+[node name="P2Goal" type="Area2D" parent="."]
+position = Vector2( 1306, 360 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
+goal_id = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="P2Goal"]
+shape = SubResource( 2 )
+
+[node name="P1Score" type="Label" parent="."]
+anchor_right = 0.9
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 3 )
+text = "0
+"
+align = 1
+
+[node name="P2Score" type="Label" parent="."]
+anchor_left = 0.1
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 4 )
+text = "0
+"
+align = 1
+
+[node name="P1Meter" type="TextureProgress" parent="."]
+margin_left = 55.0
+margin_top = 688.0
+margin_right = 287.0
+margin_bottom = 710.0
+texture_under = ExtResource( 10 )
+texture_over = ExtResource( 9 )
+texture_progress = ExtResource( 13 )
+nine_patch_stretch = true
+script = ExtResource( 7 )
+
+[node name="P2Meter" type="TextureProgress" parent="."]
+margin_left = 995.0
+margin_top = 688.0
+margin_right = 1227.0
+margin_bottom = 710.0
+texture_under = ExtResource( 10 )
+texture_over = ExtResource( 9 )
+texture_progress = ExtResource( 13 )
+fill_mode = 1
+nine_patch_stretch = true
+script = ExtResource( 7 )
+
+[node name="PassiveGainTimer" type="Timer" parent="."]
+autostart = true
+script = ExtResource( 5 )
+
+[node name="P1Cooldown" type="TextureProgress" parent="."]
+margin_left = 55.0
+margin_top = 675.0
+margin_right = 237.0
+margin_bottom = 685.0
+texture_progress = ExtResource( 11 )
+nine_patch_stretch = true
+script = ExtResource( 12 )
+
+[node name="P2Cooldown" type="TextureProgress" parent="."]
+margin_left = 1045.0
+margin_top = 675.0
+margin_right = 1227.0
+margin_bottom = 685.0
+texture_progress = ExtResource( 11 )
+fill_mode = 1
+nine_patch_stretch = true
+script = ExtResource( 12 )
+
+[node name="P2DashTimer" type="Timer" parent="."]
+one_shot = true
+script = ExtResource( 5 )
+
+[node name="P1DashTimer" type="Timer" parent="."]
+one_shot = true
+script = ExtResource( 5 )
+
+[node name="P2HitTimer" type="Timer" parent="."]
+one_shot = true
+script = ExtResource( 5 )
+
+[node name="P1HitTimer" type="Timer" parent="."]
+one_shot = true
+script = ExtResource( 5 )
+
+[node name="Player2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 1280, 360 )
+rotation = 3.14159
+mvSpeed = 500
+player_id = 2
+
+[node name="Player1" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, 360 )
+scale = Vector2( 0.999621, 1 )
+mvSpeed = 500
+
+[connection signal="child_exiting_tree" from="." to="." method="noBalls"]
+[connection signal="body_entered" from="P1Goal" to="P1Goal" method="OnWallAreaEntered"]
+[connection signal="body_entered" from="P2Goal" to="P2Goal" method="OnWallAreaEntered"]
+[connection signal="timeout" from="PassiveGainTimer" to="P1Meter" method="_on_PassiveGainTimer_timeout"]
+[connection signal="timeout" from="PassiveGainTimer" to="P2Meter" method="_on_PassiveGainTimer_timeout"]
